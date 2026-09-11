@@ -1,17 +1,15 @@
-import { localDev, none, vercelOidc } from "eve/channels/auth";
+import { localDev, placeholderAuth, vercelOidc } from "eve/channels/auth";
 import { eveChannel } from "eve/channels/eve";
 
-// This template accepts anonymous traffic so the deployed demo is clickable in
-// production. The deployment itself is gated by Vercel deployment protection.
-// Swap `none()` for a real provider (Auth.js, Clerk, `vercelOidc()`, ...) before
-// exposing the agent publicly.
 export default eveChannel({
   auth: [
-    // Lets the eve TUI and your Vercel deployments reach the deployed agent.
+    // Lets the eve TUI and your own Vercel deployments reach the agent.
     vercelOidc(),
     // Open on localhost for `eve dev` and the REPL; ignored in production.
     localDev(),
-    // Public demo: anyone with the deployment URL can chat with the agent.
-    none(),
+    // Safe default: blocks anonymous browser requests in production. Replace
+    // with your auth provider (Auth.js, Clerk, ...) so each user gets their own
+    // memory, or use `none()` for a public demo where everyone shares memory.
+    placeholderAuth(),
   ],
 });

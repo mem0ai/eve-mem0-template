@@ -27,12 +27,15 @@ and to remember durable facts. Memory is scoped per user via
 
 ## Auth
 
-Out of the box the chat channel is a public demo (`none()` in
-`agent/channels/eve.ts`): anyone with the deployment URL can chat, and the
-deployment itself is gated by Vercel deployment protection. Before exposing the
-agent for real, swap `none()` for a real provider (Auth.js, Clerk,
-`vercelOidc()`). Memory is scoped per authenticated user via `principalId`, so a
-real provider gives each user their own memory automatically.
+The chat channel (`agent/channels/eve.ts`) ships with `placeholderAuth()`, the
+safe default: local development works, your own Vercel deployments and the eve
+TUI can reach the agent, and anonymous browser traffic is blocked in production.
+
+Add your auth provider (Auth.js, Clerk, `vercelOidc()`) to open it to real
+users. Memory is scoped per authenticated user via `principalId`, so each user
+gets their own memory automatically once a provider is in place. For a throwaway
+public demo where everyone shares one memory, swap `placeholderAuth()` for
+`none()`.
 
 ## Run locally
 
