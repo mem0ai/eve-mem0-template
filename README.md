@@ -24,6 +24,15 @@ The instructions (`agent/instructions.md`) tell the model to recall before answe
 and to remember durable facts. Memory is scoped per user via
 `ctx.session.auth.current.principalId` (see `agent/lib/mem0.ts`).
 
+## Auth
+
+Out of the box the chat channel is a public demo (`none()` in
+`agent/channels/eve.ts`): anyone with the deployment URL can chat, and the
+deployment itself is gated by Vercel deployment protection. Before exposing the
+agent for real, swap `none()` for a real provider (Auth.js, Clerk,
+`vercelOidc()`). Memory is scoped per authenticated user via `principalId`, so a
+real provider gives each user their own memory automatically.
+
 ## Run locally
 
 ```bash
