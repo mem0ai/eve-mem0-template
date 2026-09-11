@@ -8,7 +8,7 @@ starting from scratch.
 
 ## Deploy
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/mem0ai/mem0-eve-template&project-name=mem0-eve-template&repository-name=mem0-eve-template&integration-ids=oac_rTG82TypBWqzWTr1IpOUG7EB)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmem0ai%2Fmem0-eve-template&project-name=mem0-eve-template&repository-name=mem0-eve-template&products=%5B%7B%22type%22%3A%22integration%22%2C%22integrationSlug%22%3A%22mem0%22%2C%22productSlug%22%3A%22mem0%22%2C%22protocol%22%3A%22storage%22%7D%5D)
 
 Deploy clones this repo and installs the Mem0 integration, which sets `MEM0_API_KEY`
 on your project automatically. Model access uses the Vercel AI Gateway through your
