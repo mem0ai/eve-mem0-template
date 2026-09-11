@@ -1,35 +1,43 @@
-# mem0-agent
+# Mem0 Agent (eve + Mem0)
 
-This is an [eve](https://eve.dev) agent bootstrapped with [`eve init`](https://eve.dev/docs/reference/cli#eve-init).
+A durable AI agent built with [eve](https://eve.dev) that uses [Mem0](https://mem0.ai)
+for long-term memory. The agent remembers facts and preferences about each user
+across conversations, so it gets more helpful over time instead of starting from
+scratch.
 
-## Getting started
+## Deploy
 
-First, run the development server:
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/mem0ai/mem0-agent&project-name=mem0-agent&repository-name=mem0-agent&integration-ids=oac_rTG82TypBWqzWTr1IpOUG7EB)
+
+Deploy clones this repo and installs the Mem0 integration, which sets `MEM0_API_KEY`
+on your project automatically. Model access uses the Vercel AI Gateway through your
+linked project.
+
+## How it works
+
+The agent has two Mem0-backed tools:
+
+- **`remember`** — saves a durable fact or preference (`mem0.add`).
+- **`recall_memories`** — searches long-term memory for relevant facts (`mem0.search`).
+
+The instructions (`agent/instructions.md`) tell the model to recall before answering
+and to remember durable facts. Memory is scoped per user via
+`ctx.session.auth.current.principalId` (see `agent/lib/mem0.ts`).
+
+## Run locally
 
 ```bash
-eve dev
+npm install
+vercel env pull            # pulls MEM0_API_KEY from your Vercel project
+# set AI_GATEWAY_API_KEY, or link a Vercel project for model access
+npm run dev                # opens the eve development REPL
 ```
 
-The development TUI opens an interactive session where you can send messages to your agent.
-
-Start by editing `agent/instructions.md` to define the agent's identity, purpose, tone, and response guidelines. Configure its model and runtime behavior in `agent/agent.ts`.
-
-Add capabilities under `agent/`, including tools, connections, channels, skills, subagents, and schedules. eve reloads your changes as you work.
+Try it: tell the agent something ("I'm vegetarian and allergic to nuts"), start a
+new session, and ask "what can I eat?" — it recalls what you told it.
 
 ## Learn more
 
-To learn more about eve, explore these resources:
-
-- [eve documentation](https://eve.dev/docs) — learn about eve's features and authoring APIs.
-- [Build an Agent tutorial](https://eve.dev/docs/tutorial/first-agent) — build and deploy an agent step by step.
-- [eve on GitHub](https://github.com/vercel/eve) — view the source and contribute.
-
-## Deploy on Vercel
-
-Deploy your agent to [Vercel](https://vercel.com) from the project root:
-
-```bash
-eve deploy
-```
-
-`eve deploy` links a Vercel project if needed and deploys the agent to production. See the [eve deployment documentation](https://eve.dev/docs/guides/deployment/vercel) for authentication, environment variables, and deployment options.
+- [Mem0 on Vercel](https://docs.mem0.ai/integrations/vercel)
+- [Mem0 quickstart](https://docs.mem0.ai/platform/quickstart)
+- [eve documentation](https://eve.dev/docs)
