@@ -55,6 +55,10 @@ new session, and ask "what can I eat?" — it recalls what you told it.
 - [Mem0 quickstart](https://docs.mem0.ai/platform/quickstart)
 - [eve documentation](https://eve.dev/docs)
 
+## Contributing
+
+Improvements to the template are welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md).
+
 ## License
 
 Apache-2.0. See [LICENSE](./LICENSE).
