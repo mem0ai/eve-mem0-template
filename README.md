@@ -1,59 +1,62 @@
 # Mem0 eve template
 
-An [eve](https://eve.dev) agent template with long-term memory powered by
-[Mem0](https://mem0.ai). eve is Vercel's framework for durable backend AI agents;
-this template wires Mem0 into an eve agent so it remembers facts and preferences
-about each user across conversations, getting more helpful over time instead of
-starting from scratch.
+A one-click deployable AI agent with long-term memory, built with
+[eve](https://eve.dev) (Vercel's framework for durable backend AI agents) and
+powered by [Mem0](https://mem0.ai). It ships a web chat UI and remembers facts
+about each user across conversations, so it gets more helpful over time instead
+of starting from scratch.
 
 ## Deploy
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/mem0ai/mem0-eve-template&project-name=mem0-eve-template&repository-name=mem0-eve-template&integration-ids=oac_rTG82TypBWqzWTr1IpOUG7EB)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmem0ai%2Fmem0-eve-template&project-name=mem0-eve-template&repository-name=mem0-eve-template&products=%5B%7B%22type%22%3A%22integration%22%2C%22integrationSlug%22%3A%22mem0%22%2C%22productSlug%22%3A%22mem0%22%2C%22protocol%22%3A%22storage%22%7D%5D)
 
-Deploy clones this repo and installs the Mem0 integration, which sets `MEM0_API_KEY`
-on your project automatically. Model access uses the Vercel AI Gateway through your
-linked project.
+Deploy clones this repo and installs the Mem0 integration, which provisions a
+scoped Mem0 project and injects `MEM0_API_KEY`, `MEM0_ORG_ID`, `MEM0_PROJECT_ID`,
+and `MEM0_BASE_URL` into your project automatically. Model access uses the Vercel
+AI Gateway.
 
-## How it works
+## What you get
 
-The agent has two Mem0-backed tools:
+- A **web chat UI** (Next.js + eve's AI Elements) served at `/`.
+- Two Mem0-backed tools:
+  - **`remember`** — saves a durable fact or preference (`mem0.add`).
+  - **`recall_memories`** — searches long-term memory for relevant facts (`mem0.search`).
 
-- **`remember`** — saves a durable fact or preference (`mem0.add`).
-- **`recall_memories`** — searches long-term memory for relevant facts (`mem0.search`).
-
-The instructions (`agent/instructions.md`) tell the model to recall before answering
-and to remember durable facts. Memory is scoped per user via
+The instructions (`agent/instructions.md`) tell the model to recall before
+answering and to remember durable facts. Memory is scoped per user via
 `ctx.session.auth.current.principalId` (see `agent/lib/mem0.ts`).
 
-## Auth
+## Auth (important)
 
-The chat channel (`agent/channels/eve.ts`) ships with `placeholderAuth()`, the
-safe default: local development works, your own Vercel deployments and the eve
-TUI can reach the agent, and anonymous browser traffic is blocked in production.
-
-Add your auth provider (Auth.js, Clerk, `vercelOidc()`) to open it to real
-users. Memory is scoped per authenticated user via `principalId`, so each user
-gets their own memory automatically once a provider is in place. For a throwaway
-public demo where everyone shares one memory, swap `placeholderAuth()` for
-`none()`.
+The chat ships **public** (`none()` in `agent/channels/eve.ts`) so it works the
+moment you deploy. Anyone with the URL can chat, and they all share one memory
+space. Before using this for anything real, swap `none()` for an auth provider
+(Auth.js, Clerk, `vercelOidc()`). Memory is scoped per authenticated user via
+`principalId`, so a real provider gives each user their own private memory with
+no other changes.
 
 ## Run locally
 
 ```bash
 npm install
-vercel env pull            # pulls MEM0_API_KEY from your Vercel project
-# set AI_GATEWAY_API_KEY, or link a Vercel project for model access
-npm run dev                # opens the eve development REPL
+cp .env.example .env    # add MEM0_API_KEY and model access (AI_GATEWAY_API_KEY)
+npm run dev             # Next.js dev server with the chat UI
+# npm run dev:eve       # headless eve REPL instead of the web UI
 ```
 
-Try it: tell the agent something ("I'm vegetarian and allergic to nuts"), start a
-new session, and ask "what can I eat?" — it recalls what you told it.
+Try it: tell the agent something ("I'm vegetarian and allergic to peanuts"),
+start a new chat, and ask "what can I cook for dinner?" — it recalls what you
+told it.
 
 ## Learn more
 
 - [Mem0 on Vercel](https://docs.mem0.ai/integrations/vercel)
 - [Mem0 quickstart](https://docs.mem0.ai/platform/quickstart)
 - [eve documentation](https://eve.dev/docs)
+
+## Contributing
+
+Improvements to the template are welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## License
 
