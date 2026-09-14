@@ -47,19 +47,23 @@ function toolInfo(part: Part): { name: string; input: Part["input"]; output: Par
 // The line that makes this a Mem0 demo: shows memory being written and read.
 function memoryLine(name: string, input: Part["input"], output: Part["output"]): string {
   const hasOutput = output !== undefined && output !== null;
+  const memories = Array.isArray(output?.memories) ? output.memories : [];
   if (name === "remember") {
     const content = input?.content;
-    return `💾 ${hasOutput ? "Saved to memory" : "Saving to memory"}${content ? `: “${content}”` : ""}`;
+    return `${hasOutput ? "Saved to memory" : "Saving to memory"}${content ? `: “${content}”` : ""}`;
   }
   if (name === "recall_memories") {
     const query = input?.query;
-    const memories = Array.isArray(output?.memories) ? output.memories : [];
-    if (!hasOutput) return `🔎 Searching memory${query ? ` for “${query}”` : ""}…`;
+    if (!hasOutput) return `Searching memory${query ? ` for “${query}”` : ""}…`;
     return memories.length > 0
-      ? `🔎 Recalled from memory: ${memories.join(" · ")}`
-      : `🔎 Searched memory${query ? ` for “${query}”` : ""} — nothing stored yet`;
+      ? `Recalled from memory: ${memories.join(" · ")}`
+      : `Searched memory${query ? ` for “${query}”` : ""} — nothing stored yet`;
   }
-  return `🔧 ${name}`;
+  if (name === "list_memories") {
+    if (!hasOutput) return "Loading all memories…";
+    return memories.length > 0 ? `All memories: ${memories.join(" · ")}` : "No memories stored yet";
+  }
+  return name;
 }
 
 // Give each browser a stable random id (cookie), sent with every request so the
@@ -120,7 +124,7 @@ export default function Page() {
             <br />
             Then ask: &ldquo;What can I cook for dinner?&rdquo;
             <br />
-            <span style={styles.emptyHint}>You&rsquo;ll see 💾 and 🔎 whenever it touches memory.</span>
+            <span style={styles.emptyHint}>Memory events appear inline as it stores and recalls facts.</span>
           </div>
         ) : null}
 
