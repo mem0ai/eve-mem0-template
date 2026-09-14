@@ -36,7 +36,23 @@ function textOf(message: Message): string {
     .join("");
 }
 
+// Give each browser a stable random id (cookie), sent with every request so the
+// server-side anonCookie() auth scopes this visitor's memory to their own bucket.
+function ensureAnonId(): string {
+  if (typeof document === "undefined") return "";
+  const existing = /(?:^|;\s*)mem0_demo_uid=([^;]+)/.exec(document.cookie)?.[1];
+  if (existing) return decodeURIComponent(existing);
+  const id =
+    typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : Math.random().toString(36).slice(2);
+  document.cookie = `mem0_demo_uid=${id}; path=/; max-age=31536000; samesite=lax`;
+  return id;
+}
+
 export default function Page() {
+  // Runs once, synchronously, before the agent connects — sets the cookie first.
+  useState(ensureAnonId);
   const agent = useEveAgent();
   const [input, setInput] = useState("");
   const [count, setCount] = useState(0);
