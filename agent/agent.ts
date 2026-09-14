@@ -17,10 +17,14 @@ const azure = createAzure({
   resourceName: azureResourceName(),
   apiKey: process.env.AZURE_API_KEY,
   apiVersion: process.env.AZURE_API_VERSION,
+  // Use the classic deployment-based Chat Completions endpoint
+  // (/openai/deployments/<deployment>/chat/completions?api-version=...), which is
+  // broadly supported and works with dated api-versions like 2025-04-01-preview.
+  useDeploymentBasedUrls: true,
 });
 
 export default defineAgent({
-  model: azure(process.env.AZURE_DEPLOYMENT ?? "gpt-4o-mini"),
+  model: azure.chat(process.env.AZURE_DEPLOYMENT ?? "gpt-4o-mini"),
   // SECURITY: public demo. Disable eve's built-in default tools (bash, file
   // read/write, self-modification) so a prompt injection can never run shell
   // or read env vars. Only the authored memory tools remain.
