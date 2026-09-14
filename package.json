@@ -1,31 +1,36 @@
 {
-  "name": "mem0-eve-template",
+  "name": "eve-mem0-template",
   "version": "0.0.0",
+  "private": true,
   "type": "module",
   "imports": {
-    "#*": "./agent/*",
-    "#evals/*": "./evals/*"
+    "#*": "./agent/*"
   },
   "scripts": {
-    "build": "eve build",
+    "build": "next build",
+    "dev": "next dev",
+    "start": "next start",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
     "deploy": "eve deploy",
-    "dev": "eve dev",
-    "eval": "eve eval",
-    "start": "eve start",
-    "typecheck": "tsc"
+    "dev:eve": "eve dev"
   },
   "dependencies": {
     "@vercel/connect": "1.0.0",
     "ai": "^7.0.93",
     "eve": "^0.53.1",
     "mem0ai": "^3.1.6",
-    "zod": "4.5.4"
+    "next": "^16.3.0-preview.6",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "zod": "^4.5.4"
   },
   "devDependencies": {
-    "@types/node": "24.x",
-    "typescript": "7.0.2"
+    "@types/node": "^26.5.1",
+    "@types/react": "^19.2.15",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^6.0.3"
   },
   "engines": {
-    "node": "24.x"
+    "node": ">=20"
   }
 }
