@@ -1,15 +1,8 @@
-import { localDev, placeholderAuth, vercelOidc } from "eve/channels/auth";
+import { localDev, none, vercelOidc } from "eve/channels/auth";
 import { eveChannel } from "eve/channels/eve";
 
+// Public demo: the hosted chat is open so anyone can try it. Spend is bounded by
+// a per-visitor message limit in the UI and by the Azure deployment's own quota.
 export default eveChannel({
-  auth: [
-    // Lets the eve TUI and your own Vercel deployments reach the agent.
-    vercelOidc(),
-    // Open on localhost for `eve dev` and the REPL; ignored in production.
-    localDev(),
-    // Safe default: blocks anonymous browser requests in production. Replace
-    // with your auth provider (Auth.js, Clerk, ...) so each user gets their own
-    // memory, or use `none()` for a public demo where everyone shares memory.
-    placeholderAuth(),
-  ],
+  auth: [vercelOidc(), localDev(), none()],
 });
