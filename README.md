@@ -19,9 +19,10 @@ and `MEM0_BASE_URL` into your project. Model access uses the Vercel AI Gateway.
 ## What you get
 
 - A **web chat UI** (Next.js) served at `/`.
-- Two Mem0-backed tools:
+- Three Mem0-backed tools:
   - **`remember`** — saves a durable fact or preference (`mem0.add`).
   - **`recall_memories`** — searches long-term memory for relevant facts (`mem0.search`).
+  - **`list_memories`** — lists everything stored for the user (`mem0.getAll`).
 
 The instructions (`agent/instructions.md`) tell the model to recall before
 answering and to remember durable facts. Memory is scoped per user via
